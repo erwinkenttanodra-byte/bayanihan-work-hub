@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bayanihan Work Hub - Offline Portal</title>
+    <style>
+        :root {
+            --primary-color: #0038a8;
+            --accent-color: #ce1126;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --warning-color: #ff9800;
+            --success-color: #4caf50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .status-banner {
+            background-color: var(--warning-color);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .status-banner.online {
+            background-color: var(--success-color);
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 18px;
+            border-bottom: 2px solid #eaeaea;
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 80px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #002a80;
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            margin-top: 10px;
+        }
+
+        .btn-accent:hover {
+            background-color: #a30e1e;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 10px 0 0 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .badge {
+            background: #e9ecef;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .queue-count {
+            float: right;
+            background: var(--accent-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="status-banner" id="connectivityBanner">
+        ⚠️ OFFLINE MODE: Submissions will cache locally and queue for background SMS transmission.
+    </div>
+
+    <header>
+        <h1>Bayanihan Work Hub</h1>
+        <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.9;">Local Livelihood Matching • Offline-First Ecosystem</p>
+    </header>
+
+    <main>
+        <div class="card">
+            <h2>📚 Pre-Loaded Vocational Training Modules</h2>
+            <p style="font-size: 13px; color: #6c757d; margin-top: -5px;">Available completely offline via local storage cache:</p>
+            <ul>
+                <li>
+                    <strong>TESDA Digital Literacy Basics</strong> 
+                    <span class="badge">Module 1 Cached</span>
+                    <p style="margin: 2px 0 0 0; font-size: 13px; color: #555;">Learn basic spreadsheet computations and data management structures.</p>
+                </li>
+                <li>
+                    <strong>Introduction to Local BPO Logistics</strong> 
+                    <span class="badge">Module 2 Cached</span>
+                    <p style="margin: 2px 0 0 0; font-size: 13px; color: #555;">Understanding schedule systems and customer support ticketing interfaces.</p>
+                </li>
+                <li>
+                    <strong>Small Engine Maintenance & Repair</strong> 
+                    <span class="badge">Module 3 Cached</span>
+                    <p style="margin: 2px 0 0 0; font-size: 13px; color: #555;">Troubleshooting standard public transport tricycles and agricultural pumps.</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>📝 Submit Local Worker Registry Profile <span class="queue-count" id="queueBadge">0 Queued</span></h2>
+            <form id="registryForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name (Pangalan):</label>
+                    <input type="text" id="fullName" placeholder="e.g., Juan Dela Cruz" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactNumber">Mobile Number (Numero):</label>
+                    <input type="text" id="contactNumber" placeholder="e.g., 0917XXXXXXX" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="primarySkill">Primary Practical Skill / Specialization:</label>
+                    <select id="primarySkill" required>
+                        <option value="">-- Select Your Main Strength --</option>
+                        <option value="Mechanical">Small Engine Mechanical Repairs</option>
+                        <option value="Customer Support">Customer Service / Basic Encoding</option>
+                        <option value="Logistics">Inventory Handling & Distribution</option>
+                        <option value="Domestic">Food Preparation & Baking</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="experienceSummary">Brief Work Experience Summary:</label>
+                    <textarea id="experienceSummary" placeholder="List any past short-term contracts, informal work, or vocational skills you have..."></textarea>
+                </div>
+
+                <button type="button" class="btn" onclick="processOfflineSubmission()">Save Profile to Queue</button>
+                <button type="button" class="btn btn-accent" onclick="simulateNetworkReconnection()">Simulate Network Reconnection</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            updateQueueDisplay();
+            
+            window.addEventListener('online', handleNetworkRestoration);
+            window.addEventListener('offline', handleNetworkDisconnection);
+            
+            if(navigator.onLine) {
+                setSystemOnlineVisuals();
+            }
+        });
+
+        function processOfflineSubmission() {
+            const nameField = document.getElementById('fullName').value.trim();
+            const phoneField = document.getElementById('contactNumber').value.trim();
+            const skillField = document.getElementById('primarySkill').value;
+            const expField = document.getElementById('experienceSummary').value.trim();
+
+            if (!nameField || !phoneField || !skillField) {
+                alert("Please fill in Name, Mobile Number, and Primary Skill parameters.");
+                return;
+            }
+
+            const profilePayload = {
+                id: 'REG-' + Date.now(),
+                name: nameField,
+                phone: phoneField,
+                skill: skillField,
+                experience: expField,
+                timestamp: new Date().toISOString()
+            };
+
+            let applicationQueue = JSON.parse(localStorage.getItem('bayanihan_job_queue')) || [];
+            applicationQueue.push(profilePayload);
+            
+            localStorage.setItem('bayanihan_job_queue', JSON.stringify(applicationQueue));
+            
+            document.getElementById('registryForm').reset();
+            updateQueueDisplay();
+
+            alert(💾 Profile successfully cached offline!\n\nYour profile has been saved inside the device local storage. If internet is unavailable, a background system script will prepare an automated text package matching this data to clear through an alternative SMS network gateway.);
+        }
+
+        function updateQueueDisplay() {
+            const currentQueue = JSON.parse(localStorage.getItem('bayanihan_job_queue')) || [];
+            document.getElementById('queueBadge').innerText = ${currentQueue.length} Queued;
+        }
+
+        function handleNetworkDisconnection() {
+            const banner = document.getElementById('connectivityBanner');
+            banner.className = "status-banner";
+            banner.innerText = "⚠️ OFFLINE MODE: Submissions will cache locally and queue for background SMS transmission.";
+        }
+
+        function handleNetworkRestoration() {
+
+setSystemOnlineVisuals();
+synchronizeCachedRegistry();
+}
+function setSystemOnlineVisuals() {
+const banner = document.getElementById('connectivityBanner');
+banner.className = "status-banner online";
+banner.innerText = "⚡ SYSTEM ONLINE: Network link verified. Local synchronization logs active.";
+}
+function synchronizeCachedRegistry() {
+let activeQueue = JSON.parse(localStorage.getItem('bayanihan_job_queue')) || [];
+if (activeQueue.length === 0) return;
+console.log(Starting automated background upload execution for ${activeQueue.length} profiles...);
+alert(🔄 Network connectivity detected!\n\nSynchronizing ${activeQueue.length} queued worker profiles seamlessly with the central LGU Labor Registry Database...);
+localStorage.removeItem('bayanihan_job_queue');
+updateQueueDisplay();
+}
+function simulateNetworkReconnection() {
+console.log("Forcing software network synchronization routine simulation...");
+setSystemOnlineVisuals();
+synchronizeCachedRegistry();
+}
+
+
+
+*
+
+<FollowUp>
+Would you like a short *presentation script* to explain how this code operates when you demonstrate it to your teachers?
+</FollowUp>
